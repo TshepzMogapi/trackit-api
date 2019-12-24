@@ -6,26 +6,68 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 
+
+const User = require("../Models/User");
+
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management
+ */
+
+/**
+ * @swagger
+ * path:
+ *  /users/:
+ *    post:
+ *      summary: Create a new user
+ *      tags: [Users]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/User'
+ *      responses:
+ *        "200":
+ *          description: A user schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ */
 router.post('/users', (req, res, next) => {
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    data = JSON.parse( data );
-    data["user4"] =  {
-     "name" : "User4 Name3",
-     "id": 4
-  };
-    console.log( data );
-    res.end( JSON.stringify(data));
- });
+  const { firstName, lastName } = req.body;
+  const user = new User(firstName, lastName);
+  res.json(user);
   
 });
 
+
+/**
+ * @swagger
+ * path:
+ *  /users/:
+ *    get:
+ *      summary: Get all users
+ *      tags: [Users]
+ *      responses:
+ *        "200":
+ *          description: An array of users
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/User'
+ */
 router.get('/users', (req, res, next) => {
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    console.log( data );
-    // res.send( data );
-    res.json(data);
- });
-  res.json({ userOne, userTwo });
+
+
+  const user = new User("Tshepiso", "username@domain.com");
+  
+  res.json({ user });
 });
 
 
@@ -46,7 +88,7 @@ const options = {
       }
     ]
   },
-  apis: ["./Routes/index.js"]
+  apis: ["./Models/User.js","./Routes/index.js"]
 };
 const specs = swaggerJsdoc(options);
 router.use("/docs", swaggerUi.serve);

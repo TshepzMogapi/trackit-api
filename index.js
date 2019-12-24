@@ -2,15 +2,10 @@
 const express = require('express');
 const router = express.Router();
 
-var fs = require("fs");
-
 const bodyParser = require('body-parser');
 const routes = require("./Routes");
 
 const app = express();
-
-
-
 
 const port = 3000;
 
